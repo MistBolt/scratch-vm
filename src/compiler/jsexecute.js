@@ -682,10 +682,13 @@ const scopedEval = source => {
     try {
         return new Function('globalState', withRuntime)(globalState);
     } catch (e) {
-        globalState.log.error('was unable to compile script', withRuntime);
-        throw e;
+        const stackLines = e.stack.split('\n');
+        const errorLine = stackLines[1]; // The second line in the stack trace usually contains the line number
+        globalState.log.error('was unable to compile script', withRuntime, errorLine);
+        throw new Error(`Script error at ${errorLine}: ${e.message}`);
     }
 };
+
 
 execute.scopedEval = scopedEval;
 execute.runtimeFunctions = runtimeFunctions;
