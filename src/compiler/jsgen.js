@@ -549,7 +549,7 @@ class JSGenerator {
         case 'json.toArray_':
             return new TypedInput(`${this.descendInput(node.string).asArray()}`, TYPE_ARRAY);
         case 'json.valueOfIndex':
-            return new TypedInput(`${this.descendInput(node.array).asArray()}[${this.descendInput(node.index).asNumber()}] ?? ""`, TYPE_STRING);
+            return new TypedInput(`(${this.descendInput(node.array).asArray()}[${this.descendInput(node.index).asNumber()}] ?? "")`, TYPE_STRING);
         case 'json.indexOfValue':
             return new TypedInput(`${this.descendInput(node.array).asArray()}.indexOf(${this.descendInput(node.value).asString()}) !== -1 ? ${this.descendInput(node.array).asArray()}.indexOf(${this.descendInput(node.value).asString()}) : ""`, TYPE_STRING);
         case 'json.addItem':
