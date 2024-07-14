@@ -489,6 +489,7 @@ class Thread {
         }
 
         let result;
+
         if (cachedResult) {
             result = cachedResult.value;
         } else {
@@ -498,11 +499,24 @@ class Thread {
                     blocks.cacheCompileResult(topBlock, result);
                 }
             } catch (error) {
-                log.error('cannot compile script', this.target.getName(), error);
+                const targetName = this.target.getName();
+        
+                // Detailed error logging
+                log.error('Error while compiling script', {
+                    target: targetName,
+                    errorMessage: error.message,
+                    stack: error.stack,
+                    time: new Date().toISOString()
+                });
+
+                // Cache the error if caching is allowed
                 if (canCache) {
                     blocks.cacheCompileError(topBlock, error);
                 }
+
+                // Emit the compile error event
                 this.target.runtime.emitCompileError(this.target, error);
+
                 return;
             }
         }
