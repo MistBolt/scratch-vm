@@ -535,7 +535,7 @@ class JSGenerator {
         case 'json.values':
             return new TypedInput(`Object.values(${this.descendInput(node.object).asObject()})`, TYPE_ARRAY);
         case 'json.valueOfKey':
-            return new TypedInput(`${this.descendInput(node.object).asObject()}[${this.descendInput(node.key).asString()}] ?? ""`, TYPE_STRING);
+            return new TypedInput(`(${this.descendInput(node.object).asObject()}[${this.descendInput(node.key).asString()}] ?? "")`, TYPE_STRING);
         case 'json.setKey':
             return new TypedInput(`(object = ${this.descendInput(node.object).asObject()}, object[${this.descendInput(node.key).asString()}] = ${this.descendInput(node.value).asString()}, object)`, TYPE_OBJECT);
         case 'json.deleteKey':
